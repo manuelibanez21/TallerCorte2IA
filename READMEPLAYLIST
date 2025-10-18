@@ -1,0 +1,110 @@
+# README — ACO para recomendación de playlists (Repertorio de Metallica)
+
+**Resumen corto:**  
+Este proyecto implementa un recomendador de playlists usando **Ant Colony Optimization (ACO)** sobre un repertorio manual (Metallica). El algoritmo construye playlists sugeridas (secuencias de canciones) optimizando la afinidad con las preferencias del usuario y la coherencia entre canciones. El código principal está en `playliststaller3.py`.
+
+---
+
+## 1. Descripción del proyecto
+
+Este ejercicio demuestra cómo aplicar ACO para generar playlists coherentes y personalizadas a partir de un catálogo curado. En lugar de trabajar con datos aleatorios, las canciones están definidas manualmente (atributos: álbum/era, `energia`, `valencia`) para mantener control artístico sobre el catálogo. El objetivo es que varias hormigas (soluciones candidatas) exploren y, mediante feromonas y heurísticas de similitud/afinidad, convergezcan hacia playlists con mayor preferencia para un usuario.
+
+---
+
+## 2. Requisitos e instalación
+
+**Requisitos mínimos:**
+- Python 3.8+  
+- Paquetes: `numpy` (y `random` que viene con Python)
+
+**Instalación rápida**
+```bash
+pip install numpy
+```
+
+**Ejecución:**
+```bash
+python playliststaller3.py
+```
+
+---
+
+## 3. Explicación del algoritmo
+
+### Catálogo
+Cada canción está definida manualmente con:
+- Nombre
+- Álbum (clave con peso simbólico)
+- Energía (0–1)
+- Valencia (positividad emocional, 0–1)
+
+### Preferencias del usuario
+Ejemplo:
+```python
+preferencias_usuario = {'RTL': 0.5, 'energia': 0.8, 'valencia': 0.7}
+```
+Esto representa la afinidad deseada por álbum y estilo emocional.
+
+### Lógica ACO
+- **Feromonas:** cada par de canciones tiene un rastro de feromona que se actualiza.  
+- **Similitud:** heurística entre canciones (coseno entre vectores).  
+- **Afinidad:** qué tan bien una canción coincide con las preferencias del usuario.  
+- **Hormigas:** cada una genera una playlist candidata y refuerza combinaciones prometedoras.
+
+### Proceso
+1. Inicializar feromonas.  
+2. Cada hormiga crea una playlist.  
+3. Calcular su calidad promedio.  
+4. Actualizar feromonas.  
+5. Repetir por varias iteraciones.  
+
+### Resultado
+El sistema devuelve una secuencia de canciones que maximiza la afinidad y coherencia musical.
+
+---
+
+## 4. Parámetros clave
+
+| Parámetro | Descripción | Valor por defecto |
+|------------|--------------|-------------------|
+| `NUM_HORMIGAS` | Número de hormigas por iteración | 20 |
+| `NUM_ITER` | Iteraciones totales | 50 |
+| `ALPHA` | Peso de feromonas | 1 |
+| `BETA` | Peso de la heurística (similitud) | 2 |
+| `RHO` | Tasa de evaporación | 0.3 |
+| `Q` | Escala de refuerzo | 100 |
+
+---
+
+## 5. Salida esperada
+
+Durante la ejecución se muestran iteraciones como:
+
+```
+Iter 1: mejor calidad = 0.621
+Iter 2: mejor calidad = 0.645
+...
+Iter 50: mejor calidad = 0.732
+```
+
+Al final:
+```
+🎶 Playlist recomendada:
+▶️ Enter Sandman: {'The black album': 0.1, 'energia': 0.95, 'valencia': 0.4}
+▶️ Fade to Black: {...}
+...
+```
+
+---
+
+## 6. Posibles mejoras
+
+- Agregar más atributos musicales (tempo, popularidad, acústica).
+- Permitir ajuste dinámico de preferencias del usuario.
+- Conectarse a la API de Spotify para obtener datos reales.
+- Graficar la evolución de la calidad promedio de las playlists.
+- Incluir visualización energética y emocional de la playlist final.
+
+---
+
+
